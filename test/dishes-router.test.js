@@ -32,7 +32,9 @@ describe("dishes router", () => {
       expect(response.body.data.id).not.toBeUndefined();
       expect(response.body.data.name).toEqual(expectedName);
       expect(response.status).toBe(201);
-      expect(dishes.find(dish => dish.name === expectedName)).not.toBeUndefined();
+      expect(
+        dishes.find((dish) => dish.name === expectedName)
+      ).not.toBeUndefined();
     });
 
     test("returns 400 if name is missing", async () => {
@@ -48,7 +50,7 @@ describe("dishes router", () => {
       expect(response.status).toBe(400);
     });
 
-    test("returns 400 if name is empty", async () => {
+    test("returns 400 if name 1 is empty", async () => {
       const response = await request(app)
         .post(ATTACHED_PATH)
         .set("Accept", "application/json")
@@ -122,7 +124,14 @@ describe("dishes router", () => {
       const response = await request(app)
         .post(ATTACHED_PATH)
         .set("Accept", "application/json")
-        .send({ data: { name: "name", description: "description", price: 0, image_url: "none" } });
+        .send({
+          data: {
+            name: "name",
+            description: "description",
+            price: 0,
+            image_url: "none",
+          },
+        });
 
       expect(response.body.data).toBeUndefined();
       expect(response.body.error).toContain("price");
@@ -134,7 +143,12 @@ describe("dishes router", () => {
         .post(ATTACHED_PATH)
         .set("Accept", "application/json")
         .send({
-          data: { name: "name", description: "description", price: Number.MIN_SAFE_INTEGER, image_url: "none" },
+          data: {
+            name: "name",
+            description: "description",
+            price: Number.MIN_SAFE_INTEGER,
+            image_url: "none",
+          },
         });
 
       expect(response.body.data).toBeUndefined();
@@ -398,7 +412,7 @@ describe("dishes router", () => {
       expect(response.status).toBe(400);
     });
 
-    test("returns 400 if name is empty", async () => {
+    test("returns 400 if name 2 is empty", async () => {
       const original = {
         id: "16",
         name: "The Imam Fainted",
@@ -613,7 +627,7 @@ describe("dishes router", () => {
       expect(response.body.error).not.toBeUndefined();
       expect(response.status).toBe(405);
     });
-  
+
     test("returns 405 for non-existent dish", async () => {
       const response = await request(app)
         .delete(`${ATTACHED_PATH}/77`)
